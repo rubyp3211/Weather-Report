@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Weather Report</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            flex-wrap: wrap;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .box {
+            margin-top: 12vh;
+            width: 20vw;
+            height: 50vh;
+            background-color: rgb(25, 207, 227);
+            border: 2px solid rgb(3, 64, 161);
+            border-radius: 10px;
+            position: relative;
+            transform: translate3d(0, 0, 0);
+            max-width: 300px;
+            min-height: 500px;
+
+        }
+
+        #weather {
+            border-bottom: 2px solid rgb(39, 106, 145);
+            border-radius: 10px;
+            padding-top: 80px;
+            height: 25%;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            font-size: 50px;
+        }
+        informatio {
+            position: absolute;
+            bottom: 0;
+            height: 75%;
+        }
+
+        .location {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 30px;
+        }
+
+        #date {
+            text-align: center;
+            margin-top: 15px;
+            color: rgb(39, 106, 145);
+            font-size: 18px;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        .temp {
+            margin-top: 40px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 40px;
+        }
+
+        .tempmin-max {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 300;
+            font-size: 18px;
+            color: rgb(39, 106, 145);
+        }
+
+        @media(max-width: 600px) {
+            .box {
+                width: 90vw;
+                height: 80vh;
+            }
+
+            #weather {
+                font-size: 55px;
+            }
+
+            .information {
+                font-size: 1, 55px;
+            }
+        }
+
+
+        @media(max-height: 500px) {
+            .box {
+                height: 80vh;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <div id="weather">
+            <i class="fa-solid fa-sun"></i>
+        </div>
+        <div class="information">
+            <h2 class="location"> <i style="color: white;" class="fa-solid fa-location-dot  "></i>
+                {%location%},{%country%}</h2>
+            <p id="date">WED | JUNE 12 |12:21 AM</p>
+            <h2 class="temp">{%tempval%}&deg;C</h2>
+            <h3 class="tempmin-max">MIN {%tempmin%}&deg;C | MAX {%tempmax%}&deg;C</h3>
+        </div>
+    </div>
+    <script>
+        const curDate = document.getElementById("date");
+        let weathercon = document.getElementById("weather");
+        const tempStatus = "{%tempstatus%}";
+
+        if (tempStatus == "Sunny") {
+            weathercon.innerHTML = "<i style='color: rgb(247, 244, 68);' class='fa-solid fa-sun'></i>"
+        }
+        else if (tempStatus == "Clouds") {
+            weathercon.innerHTML = "<i style='color:white;'class='fa-solid fa-cloud'></i>"
+        }
+        else if (tempStatus == "Rainy") {
+            weathercon.innerHTML = "<i style='color: rgb(32, 130, 201);'class='fa-solid fa-cloud-rain'></i>"
+        }
+        else {
+            weathercon.innerHTML = "<i style='color: rgb(241, 244, 246);'class='fa-solid fa-cloud'></i>"
+        }
+
+        const getCurrentDay = () => {
+            var weekday = new Array(7);
+            weekday[0] = "Sunday";
+            weekday[1] = "Monday";
+            weekday[2] = "Tuesday";
+            weekday[3] = "Wednesday";
+            weekday[4] = "Thursday";
+            weekday[5] = "Friday";
+            weekday[6] = "Saturday";
+            let currentTime = new Date();
+            let day = weekday[currentTime.getDay()];
+            return day;
+        };
+        const getCurrentTime = () => {
+            var months = [
+                "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dev"
+            ];
+            var now = new Date();
+            var month = months[now.getMonth()];
+            var date = now.getDate();
+            var hours = now.getHours();
+            var mins = now.getMinutes();
+            var period = "AM";
+            if (hours > 11) {
+                period = "PM";
+                if (hours > 12) hours -= 12;
+            }
+            if (mins < 10) {
+                mins = "0" + mins;
+            }
+            return ` ${month} ${date} | ${hours}:${mins}${period}`;
+        };
+        curDate.innerHTML = `${getCurrentDay()} | ${getCurrentTime()}`
+    </script>
+</body>
+
+</html>
